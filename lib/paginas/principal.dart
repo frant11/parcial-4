@@ -211,55 +211,71 @@ class _PrincipalState extends State<Principal> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.redAccent,
         title: const Center(
           child: Text("Parcial 4"),
         ),
       ),
-      body: StreamBuilder(
-        stream: _clientes.snapshots(),
-        builder: ((context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-          if (streamSnapshot.hasData) {
-            return ListView.builder(
-              itemCount: streamSnapshot.data!.docs.length,
-              itemBuilder: (context, index) {
-                final DocumentSnapshot documentSnapshot =
-                    streamSnapshot.data!.docs[index];
-                return Card(
-                  margin: const EdgeInsets.all(10),
-                  child: ListTile(
-                    title: Text(documentSnapshot['sNombreCliente'].toString()),
-                    subtitle:
-                        Text(documentSnapshot['sApellidosCliente'].toString()),
-                    trailing: SizedBox(
-                      width: 100,
-                      child: Row(
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.edit),
-                            onPressed: () => _update(documentSnapshot),
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.delete),
-                            onPressed: () => _delete(documentSnapshot.id),
-                          ),
-                        ],
+      body: Container(
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+          colors: [
+            Color(0xFF701ebd),
+            Color(0xFF873bcc),
+            Color(0xFFfe4a97),
+            Color(0xFFe17763),
+            Color(0xFF68998c),
+          ],
+        )),
+        child: StreamBuilder(
+          stream: _clientes.snapshots(),
+          builder: ((context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+            if (streamSnapshot.hasData) {
+              return ListView.builder(
+                itemCount: streamSnapshot.data!.docs.length,
+                itemBuilder: (context, index) {
+                  final DocumentSnapshot documentSnapshot =
+                      streamSnapshot.data!.docs[index];
+                  return Card(
+                    color: Colors.lightBlueAccent,
+                    margin: const EdgeInsets.all(10),
+                    child: ListTile(
+                      title:
+                          Text(documentSnapshot['sNombreCliente'].toString()),
+                      subtitle: Text(
+                          documentSnapshot['sApellidosCliente'].toString()),
+                      trailing: SizedBox(
+                        width: 100,
+                        child: Row(
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.edit),
+                              onPressed: () => _update(documentSnapshot),
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.delete),
+                              onPressed: () => _delete(documentSnapshot.id),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              );
+            }
+            return const Center(
+              child: CircularProgressIndicator(
+                backgroundColor: Colors.blueAccent,
+              ),
             );
-          }
-          return const Center(
-            child: CircularProgressIndicator(
-              backgroundColor: Colors.blueAccent,
-            ),
-          );
-        }),
+          }),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (() => _create()),
         child: const Icon(Icons.add),
+        backgroundColor: Colors.blueGrey,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniEndTop,
     );
